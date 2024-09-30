@@ -1,0 +1,47 @@
+.materialContainer {
+  margin-top: 20px;
+}
+
+.header {
+  font-size: 24px; /* Font size for the header */
+  margin-bottom: 10px; /* Space below the header */
+  text-align: left; /* Center the header text */
+  color: white;
+  font-family: Helvetica;
+}
+
+.materialGrid {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Arrange items in a single column */
+  gap: 10px; /* Space between boxes */
+}
+
+.materialBox {
+  padding: 10px; /* Adjust padding for a smaller box */
+  border: 1px solid #ccc; /* Border around each box */
+  border-radius: 10px; /* Rounded corners */
+  text-align: center; /* Center the text */
+  background-color: #433935; /* Background color for boxes */
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; /* Smooth transition for effects */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size for the material name */
+  max-width: 850px; /* Optional: Set a maximum width */
+  margin: 10px 50px 20px 0px;/* Center the box */
+  color:  #dfdfe1;
+ 
+}
+
+/* Change background color on hover */
+.materialBox:hover {
+  background-color: #f0f0f0; /* Light grey background on hover */
+  transform: translateY(-5px); /* Move up slightly on hover */
+  color: black;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Shadow effect on hover */
+}
+
+/* Change color when selected */
+.selected {
+  border-color: #0071e3; /* Change border color when selected */
+  background-color: rgba(0, 113, 227, 0.1); /* Light background for selected */
+  transform: scale(1.05); /* Scale up when selected */
+}

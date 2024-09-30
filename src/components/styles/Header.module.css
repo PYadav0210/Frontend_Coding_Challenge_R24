@@ -1,0 +1,31 @@
+/* Header.module.css */
+.header {
+    display: flex;
+    justify-content: space-between; /* Space between logo and nav */
+    align-items: center; /* Center vertically */
+    background-color: #000000; /* Light background */
+    padding: 20px 50px; /* Padding around the header */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .logo {
+    font-size: 24px; /* Logo font size */
+    color: #dfdfe1; /* Logo color */
+  }
+  
+  .nav {
+    display: flex; /* Horizontal navigation */
+    gap: 20px; /* Space between links */
+  }
+  
+  .link {
+    text-decoration: none; /* Remove underline */
+    color: #dfdfe1; /* Link color */
+    font-weight: bold; /* Bold links */
+    transition: color 0.3s; /* Smooth color transition */
+  }
+  
+  .link:hover {
+    color:FAFAFA; /* Darker shade on hover */
+  }
+  
