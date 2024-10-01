@@ -1,71 +1,125 @@
-# Getting Started with Create React App
+# Frontend Coding Challenge - Circle Locator App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This project is a **Circle Locator App** built using React, with Material UI and CSS for styling. The main aim of the project is to allow users to place draggable circles on an image and adjust their positions, while tracking their coordinates in pixels and percentages. The app features coordinate input, material selection, and a dynamic table to display the output data (both pixel and percentage-based coordinates).
 
-## Available Scripts
+You can view the hosted version of the app: (https://frontend-coding-challenge-r24.vercel.app/).
 
-In the project directory, you can run:
+## App.js
 
-### `npm start`
+The `App.js` file is the central point of the application, managing the state and interactions between various components such as `Circlelocater`, `CircleDataInput`, and `Materials`. It handles circle placement, updates coordinates, and processes material selection. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Key functionality includes:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+const [circles, setCircles] = useState([]);
+const [selectedMaterial, setSelectedMaterial] = useState(null);
+const [outputData, setOutputData] = useState(null);
+```
+These states track the circles, selected material, and the output data for displaying the results. The addCircle and updateCircle functions allow adding and updating the position of the circles:
 
-### `npm test`
+```
+const addCircle = (x, y) => {
+  setCircles([...circles, { x, y }]);
+};
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const updateCircle = (index, newCoords) => {
+  const updatedCircles = circles.map((circle, i) =>
+    i === index ? newCoords : circle
+  );
+  setCircles(updatedCircles);
+};
+```
+The handleSubmit function consolidates the circle data and material, calculating the X and Y coordinates in both pixels and percentages:
 
-### `npm run build`
+```
+const handleSubmit = () => {
+  const containerWidth = containerRef.current.offsetWidth;
+  const containerHeight = containerRef.current.offsetHeight;
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  const output = {
+    circles: circles.map(circle => ({
+      ...circle,
+      xPercent: ((circle.x / containerWidth) * 100).toFixed(2),
+      yPercent: ((circle.y / containerHeight) * 100).toFixed(2),
+    })),
+    material: selectedMaterial,
+  };
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  setOutputData(output);
+  console.log("Output Data:", output);
+};
+```
+## Circlelocater.jsx
+The Circlelocater.jsx component is responsible for rendering the image and allowing users to place and drag circles on it. It tracks each circle’s position and updates it in real-time.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+const Circlelocater = ({ circles, updateCircle }) => {
+  const handleDrag = (index, e) => {
+    const newCoords = {
+      x: e.clientX - containerRef.current.offsetLeft,
+      y: e.clientY - containerRef.current.offsetTop,
+    };
+    updateCircle(index, newCoords);
+  };
+```
+This handleDrag function captures the circle’s new position as the user drags it, ensuring the correct coordinates are passed back to App.js.
 
-### `npm run eject`
+## CircleDataInput.jsx
+The CircleDataInput.jsx component allows users to manually input coordinates (X and Y) for adding new circles.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+const CircleDataInput = ({ addCircle }) => {
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  const handleAdd = () => {
+    addCircle(x, y);
+  };
+```
+Here, the handleAdd function captures the coordinates from the input fields and passes them back to App.js for processing, adding a new circle to the layout.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Materials.jsx
+The Materials.jsx component is where users can select a material that gets applied to the circles. The selected material is stored in the selectedMaterial state in App.js.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+const Materials = ({ selectedMaterial, onSelectMaterial }) => {
+  const materials = ["Metal", "Plastic", "Wood", "Glass", "Concrete"];
 
-## Learn More
+  return (
+    <div className={styles.materialGrid}>
+      {materials.map((material, index) => (
+        <div
+          key={index}
+          className={`${styles.materialBox} ${selectedMaterial === material ? styles.selected : ""}`}
+          onClick={() => onSelectMaterial(material)}
+        >
+          {material}
+        </div>
+      ))}
+    </div>
+  );
+};
+```
+The component dynamically renders a list of material boxes. When a box is clicked, the onSelectMaterial function is triggered, updating the selected material in the state.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Results: Pixels and Percentage Calculations
+When the user submits their circle placements, the app calculates the coordinates in two formats:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Pixels - Direct pixel coordinates based on the position of each circle relative to the image.
+Percentage - The coordinates as a percentage of the image’s width and height.
+For example:
 
-### Code Splitting
+```
+const output = {
+  circles: circles.map(circle => ({
+    ...circle,
+    xPercent: ((circle.x / containerWidth) * 100).toFixed(2),
+    yPercent: ((circle.y / containerHeight) * 100).toFixed(2),
+  })),
+};
+```
+These values are displayed in the table for easy comparison.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Frontend_Coding_Challenge_R24
+## Conclusion
+The Circle Locator App provides an interactive way to manage draggable circles on an image, calculating their positions in pixels and percentages. It integrates material selection, visual feedback, and dynamic input, making it highly customizable. The project demonstrates React’s flexibility in handling user inputs, managing state, and applying various layout and styling techniques.
