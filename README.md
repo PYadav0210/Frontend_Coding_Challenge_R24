@@ -122,6 +122,9 @@ const output = {
 };
 ```
 These values are displayed in the table for easy comparison.
+![Screenshot from 2024-10-01 22-26-35](https://github.com/user-attachments/assets/1b709193-614f-4b7e-9b6c-59aaccbec4dc)
+
+One thing to keep in mind is the largest pixel value for the image we used is 780 for the x-coordinate and 580 for the y-coordinate and if you enter a value bigger than that, then it will not show the circle. Also, if two circles have the same x coordinate while creating, it can be seen that they are overlapping but once you move the circles, they never collide.
 
 ## Conclusion
 The Circle Locator App provides an interactive way to manage draggable circles on an image, calculating their positions in pixels and percentages. It integrates material selection, visual feedback, and dynamic input, making it highly customizable. The project demonstrates React’s flexibility in handling user inputs, managing state, and applying various layout and styling techniques.
