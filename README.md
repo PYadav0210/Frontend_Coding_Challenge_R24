@@ -107,7 +107,9 @@ The component dynamically renders a list of material boxes. When a box is clicke
 When the user submits their circle placements, the app calculates the coordinates in two formats:
 
 Pixels - Direct pixel coordinates based on the position of each circle relative to the image.
+
 Percentage - The coordinates as a percentage of the image’s width and height.
+
 For example:
 
 ```
