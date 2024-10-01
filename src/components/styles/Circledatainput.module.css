@@ -1,24 +1,71 @@
 .inputContainer {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+  
     color: rgb(255, 255, 255);
   }
   
   input {
-    width: 60px;
+    width: 40px;
     padding: 8px;
+    height:15px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    color: rgb(255, 255, 255);
-  }
+    color: black;
+    }
   
-  button {
-    padding: 8px 16px;
-    background-color: #007aff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
+    button {
+      padding: 8px 16px;
+      background-color: rgb(201, 201, 201); /* Initial background color */
+      color: rgb(0, 0, 0); /* Initial text color */
+      border: 2px solid transparent;
+      border-radius: 1.5rem;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Glitter effect on the default state (no hover) */
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgb(144, 178, 190), rgb(169, 235, 255), rgb(255, 255, 255), rgb(166, 169, 172)); /* Glitter gradient */
+      background-size: 400% 400%; /* Larger background for animation */
+      z-index: -1;
+      opacity: 1; /* Glitter effect always visible */
+      border-radius: 1.5rem;
+      animation: glitter 1.5s linear infinite; /* Keep the glitter animation running by default */
+    }
+    
+    /* Button hover effects */
+    button:hover {
+      background-color: rgb(169, 169, 169); /* On hover, switch to a solid gray background */
+      color: rgb(255, 255, 255); /* On hover, switch to black text */
+    }
+    
+    /* Disable glitter on hover */
+    button:hover::before {
+      opacity: 0; /* Hide the glitter effect when hovering */
+    }
+    
+    /* Keyframes for glitter effect */
+    @keyframes glitter {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    

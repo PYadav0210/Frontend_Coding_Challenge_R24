@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Circlelocater from './components/circlelocater';
 import CircleDataInput from './components/circledatainput';
 import Materials from './components/materials';
 import Submit from './components/submit';
-import Header from './components/header'; // Import the Header component
+import Header from './components/header';
 import styles from './App.module.css';
 
 function App() {
   const [circles, setCircles] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [outputData, setOutputData] = useState(null);
+  
+  // Ref for circle container
+  const containerRef = useRef(null);
 
   const addCircle = (x, y) => {
     setCircles([...circles, { x, y }]);
@@ -27,11 +30,22 @@ function App() {
   };
 
   const handleSubmit = () => {
+    const containerWidth = containerRef.current.offsetWidth;
+    const containerHeight = containerRef.current.offsetHeight;
+
     const output = {
-      circles,
+      circles: circles.map(circle => ({
+        ...circle,
+        xPercent: ((circle.x / containerWidth) * 100).toFixed(2),
+        yPercent: ((circle.y / containerHeight) * 100).toFixed(2),
+      })),
       material: selectedMaterial,
     };
+
     setOutputData(output);
+
+    // Console log the output data
+    console.log("Output Data:", output);
   };
 
   return (
@@ -41,7 +55,7 @@ function App() {
 
       {/* Main app container with left and right panels */}
       <div className={styles.appContainer}>
-        <div className={styles.leftPanel}>
+        <div className={styles.leftPanel} ref={containerRef}>
           <Circlelocater circles={circles} updateCircle={updateCircle} />
         </div>
         <div className={styles.rightPanel}>
@@ -58,8 +72,10 @@ function App() {
                 <thead>
                   <tr>
                     <th>Circle Index</th>
-                    <th>X Coordinate</th>
-                    <th>Y Coordinate</th>
+                    <th>X Coordinate (px)</th>
+                    <th>Y Coordinate (px)</th>
+                    <th>X Coordinate (%)</th>
+                    <th>Y Coordinate (%)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -68,12 +84,14 @@ function App() {
                       <td>{index + 1}</td>
                       <td>{Math.round(circle.x)}</td>
                       <td>{Math.round(circle.y)}</td>
+                      <td>{circle.xPercent}%</td>
+                      <td>{circle.yPercent}%</td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="3">Selected Material: {outputData.material || 'None'}</td>
+                    <td colSpan="5">Selected Material: {outputData.material || 'None'}</td>
                   </tr>
                 </tfoot>
               </table>
